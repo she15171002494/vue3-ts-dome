@@ -11,7 +11,7 @@
 
           <div class="signOut">
             <img src="../assets/images/user.jpg" alt="" />
-            <el-button type="danger">退出登录</el-button>
+            <el-button type="danger" @click="outLogin">退出登录</el-button>
           </div>
         </el-header>
         <el-container>
@@ -22,16 +22,28 @@
               class="el-menu-vertical-demo"
               default-active="2"
               text-color="#fff"
-              @open="handleOpen"
-              @close="handleClose"
+              router
             >
-              <el-menu-item index="2">
-                <el-icon><icon-menu /></el-icon>
-                <span>商品列表</span>
+              <!-- @open="handleOpen"
+              @close="handleClose" -->
+              <!-- router开启路由模式，通过el-menu-item 里面index来进行跳转 -->
+              <el-menu-item :index="item.path" v-for="item in list" :key="item.path">
+                <span>{{ item.meta.title }}</span>
               </el-menu-item>
             </el-menu>
           </el-aside>
-          <el-main>Main</el-main>
+          <el-main>
+            <router-view />
+            <el-dialog v-model="dialogVisible" title="温馨提示" width="30%">
+              <span style="color: red">亲，此操作将退出后台管理系统，你确定要退出嘛？</span>
+              <template #footer>
+                <span class="dialog-footer">
+                  <el-button @click="dialogVisible = false">取消</el-button>
+                  <el-button type="primary" @click="determineLogout">确定</el-button>
+                </span>
+              </template>
+            </el-dialog>
+          </el-main>
         </el-container>
       </el-container>
     </div>
@@ -39,79 +51,30 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, toRefs } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'HomeView',
   components: {},
   setup() {
-    return {}
+    const router = useRouter()
+    const data = reactive({
+      dialogVisible: false,
+    })
+    // console.log(router.getRoutes())
+    const list = router.getRoutes().filter(v => v.meta.isShow)
+
+    let outLogin = () => {
+      data.dialogVisible = true
+    }
+    let determineLogout = () => {
+      localStorage.removeItem('token')
+      router.push('/login')
+    }
+    return { router, list, outLogin, ...toRefs(data), determineLogout }
   },
 })
 </script>
 
-<style lang="scss" scoped>
-.home {
-  width: 100%;
-  height: 100%;
-  .common-layout {
-    width: 100%;
-    height: 100%;
-    .el-container {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
-.el-header {
-  background-color: #3b6ec7;
-  height: 80px;
-  padding: 0;
-  display: flex;
-  .logo {
-    width: 200px;
-    height: 80px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .logoIMG {
-    width: 60px;
-    height: 60px;
-  }
-  h2 {
-    flex: 1;
-    text-align: center;
-    line-height: 80px;
-    color: #fff;
-  }
-  .signOut {
-    width: 300px;
-    height: 80px;
-    line-height: 80px;
-    font-size: 24px;
-    color: #fff;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    img {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      overflow: hidden;
-      margin-right: 20px;
-    }
-  }
-}
-
-.el-aside {
-  // width: 100%;
-  height: 100%;
-  background-color: #96b1d9;
-}
-.el-main {
-  width: 100%;
-  height: 100%;
-  background: #d0dfef;
-}
-</style>
+<style scoped></style>

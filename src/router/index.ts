@@ -6,6 +6,26 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'home',
     component: HomeView,
+    children: [
+      {
+        path: '/goods',
+        name: 'goods',
+        meta: {
+          isShow: true,
+          title: '商品列表',
+        },
+        component: () => import(/* webpackChunkName: "goods" */ '../views/GoodsView.vue'),
+      },
+      {
+        path: '/user',
+        name: 'user',
+        meta: {
+          isShow: true,
+          title: '用户列表',
+        },
+        component: () => import(/* webpackChunkName: "user" */ '../views/UserView.vue'),
+      },
+    ],
   },
   {
     path: '/login',
