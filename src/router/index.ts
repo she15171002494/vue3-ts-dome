@@ -6,6 +6,7 @@ const routes: Array<RouteRecordRaw> = [
     path: '/',
     name: 'home',
     component: HomeView,
+    redirect: 'goods',
     children: [
       {
         path: '/goods',
@@ -24,6 +25,24 @@ const routes: Array<RouteRecordRaw> = [
           title: '用户列表',
         },
         component: () => import(/* webpackChunkName: "user" */ '../views/UserView.vue'),
+      },
+      {
+        path: '/role',
+        name: 'role',
+        meta: {
+          isShow: true,
+          title: '角色列表',
+        },
+        component: () => import(/* webpackChunkName: "role" */ '../views/RoleView.vue'),
+      },
+      {
+        path: '/authority',
+        name: 'authority',
+        meta: {
+          isShow: false,
+          title: '权限列表',
+        },
+        component: () => import(/* webpackChunkName: "Authority" */ '../views/AuthorityView.vue'),
       },
     ],
   },
@@ -48,6 +67,15 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+})
+
+router.beforeEach((to, from, next) => {
+  const token: string | null = localStorage.getItem('token')
+  if (!token && to.path !== '/login') {
+    next('/login')
+  } else {
+    next()
+  }
 })
 
 export default router

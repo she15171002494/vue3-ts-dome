@@ -11,7 +11,7 @@
 
           <div class="signOut">
             <img src="../assets/images/user.jpg" alt="" />
-            <el-button type="danger" @click="outLogin">退出登录</el-button>
+            <el-button type="danger" @click="dialogVisible = true">退出登录</el-button>
           </div>
         </el-header>
         <el-container>
@@ -20,7 +20,7 @@
               active-text-color="#ffd04b"
               background-color="#96b1d9"
               class="el-menu-vertical-demo"
-              default-active="2"
+              :default-active="active"
               text-color="#fff"
               router
             >
@@ -52,27 +52,25 @@
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRouter, useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'HomeView',
   components: {},
   setup() {
     const router = useRouter()
+    const route = useRoute()
     const data = reactive({
       dialogVisible: false,
     })
     // console.log(router.getRoutes())
     const list = router.getRoutes().filter(v => v.meta.isShow)
 
-    let outLogin = () => {
-      data.dialogVisible = true
-    }
     let determineLogout = () => {
       localStorage.removeItem('token')
       router.push('/login')
     }
-    return { router, list, outLogin, ...toRefs(data), determineLogout }
+    return { ...toRefs(data), router, list, determineLogout, active: route.path }
   },
 })
 </script>

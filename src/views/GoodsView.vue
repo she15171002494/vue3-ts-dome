@@ -26,7 +26,7 @@
       ><el-pagination
         @current-change="curretChange"
         @size-change="sizeChange"
-        layout="prev, pager, next"
+        layout="->,prev, pager, next"
         :total="selectData.count"
     /></el-footer>
   </el-container>
