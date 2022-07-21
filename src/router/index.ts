@@ -44,6 +44,24 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import(/* webpackChunkName: "Authority" */ '../views/AuthorityView.vue'),
       },
+      {
+        path: '/ceshi',
+        name: 'ceshi',
+        meta: {
+          isShow: true,
+          title: '测试页面',
+        },
+        component: () => import(/* webpackChunkName: "ceshi" */ '../views/CeshiView.vue'),
+      },
+      {
+        path: '/assembly',
+        name: 'assembly',
+        meta: {
+          isShow: true,
+          title: '测试页面',
+        },
+        component: () => import(/* webpackChunkName: "assembly" */ '../views/AssemblyView.vue'),
+      },
     ],
   },
   {

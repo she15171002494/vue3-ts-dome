@@ -31,6 +31,8 @@ import type { FormInstance } from 'element-plus'
 import { login } from '../request/api'
 import { useRouter } from 'vue-router'
 
+import { setCookie, getCookie } from '../utils/cookie'
+
 export default defineComponent({
   setup() {
     const data = reactive(new LoginData())
@@ -57,6 +59,9 @@ export default defineComponent({
           login(data.ruleForm).then(res => {
             console.log('结果', res)
             localStorage.setItem('token', res.data.token)
+            setCookie('token', res.data.token, 'h1')
+            let myToken = getCookie('token')
+            console.log('cookie保存的token', myToken)
             router.push('/')
           })
         } else {
