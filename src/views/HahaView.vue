@@ -1,5 +1,5 @@
 <template>
-  <div>关于我们</div>
+  <div>测试动态路由</div>
 </template>
 
 <script lang="ts">

@@ -59,10 +59,74 @@ export default defineComponent({
           login(data.ruleForm).then(res => {
             console.log('结果', res)
             localStorage.setItem('token', res.data.token)
+            const list = [
+              {
+                path: '/goods',
+                name: 'goods',
+                meta: {
+                  isShow: true,
+                  title: '商品列表',
+                },
+                component: 'GoodsView.vue',
+              },
+              {
+                path: '/user',
+                name: 'user',
+                meta: {
+                  isShow: true,
+                  title: '用户列表',
+                },
+                component: 'UserView.vue',
+              },
+              {
+                path: '/role',
+                name: 'role',
+                meta: {
+                  isShow: true,
+                  title: '角色列表',
+                },
+                component: 'RoleView.vue',
+              },
+              {
+                path: '/authority',
+                name: 'authority',
+                meta: {
+                  isShow: false,
+                  title: '权限列表',
+                },
+                component: 'AuthorityView.vue',
+              },
+              {
+                path: '/ceshi',
+                name: 'ceshi',
+                meta: {
+                  isShow: true,
+                  title: '测试页面',
+                },
+                component: 'CeshiView.vue',
+              },
+              {
+                path: '/assembly',
+                name: 'assembly',
+                meta: {
+                  isShow: true,
+                  title: '测试页面',
+                },
+                component: 'AssemblyView.vue',
+              },
+            ]
+            console.log('模拟动态路由数据', list)
+            localStorage.setItem('routes', JSON.stringify(list))
+            // let route = JSON.parse(localStorage.getItem('routes'))
+
+            //---------------------------------------------------------------------------
+            //测试把token存入cookie中
             setCookie('token', res.data.token, 'h1')
             let myToken = getCookie('token')
             console.log('cookie保存的token', myToken)
-            router.push('/')
+            //---------------------------------------------------------------------------
+            console.log('登录成功，跳转')
+            router.push('/layout')
           })
         } else {
           console.log('error submit!', fields)

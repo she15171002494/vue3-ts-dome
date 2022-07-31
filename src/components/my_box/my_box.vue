@@ -43,7 +43,7 @@ export default defineComponent({
   display: flex;
   flex-wrap: wrap;
   .box {
-    width: 22%;
+    width: 20%;
     margin-right: 30px;
     margin-bottom: 30px;
     padding: 20px 50px 20px 30px;

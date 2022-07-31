@@ -1,5 +1,5 @@
 <template>
-  <div>关于我们</div>
+  <div>呀，一不小心，页面走丢啦</div>
 </template>
 
 <script lang="ts">

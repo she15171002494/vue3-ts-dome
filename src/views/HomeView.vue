@@ -1,78 +1,47 @@
 <template>
-  <div class="home">
-    <div class="common-layout">
-      <el-container>
-        <el-header>
-          <div class="logo">
-            <img src="../assets/images/pp_logo.png" alt="" class="logoIMG" />
-          </div>
+  <el-container>
+    <el-header>欢迎来到首页</el-header>
+    <el-main>
+      <h2>vux初体验</h2>
+      <div>使用stroe的数据: -----{{ name }}----{{ setAsyncRoutesMark ? 1 : 0 }}</div>
 
-          <h2>皮皮后台管理系统</h2>
-
-          <div class="signOut">
-            <img src="../assets/images/user.jpg" alt="" />
-            <el-button type="danger" @click="dialogVisible = true">退出登录</el-button>
-          </div>
-        </el-header>
-        <el-container>
-          <el-aside width="200px">
-            <el-menu
-              active-text-color="#ffd04b"
-              background-color="#96b1d9"
-              class="el-menu-vertical-demo"
-              :default-active="active"
-              text-color="#fff"
-              router
-            >
-              <!-- @open="handleOpen"
-              @close="handleClose" -->
-              <!-- router开启路由模式，通过el-menu-item 里面index来进行跳转 -->
-              <el-menu-item :index="item.path" v-for="item in list" :key="item.path">
-                <span>{{ item.meta.title }}</span>
-              </el-menu-item>
-            </el-menu>
-          </el-aside>
-          <el-main>
-            <router-view />
-            <el-dialog v-model="dialogVisible" title="温馨提示" width="30%">
-              <span style="color: red">亲，此操作将退出后台管理系统，你确定要退出嘛？</span>
-              <template #footer>
-                <span class="dialog-footer">
-                  <el-button @click="dialogVisible = false">取消</el-button>
-                  <el-button type="primary" @click="determineLogout">确定</el-button>
-                </span>
-              </template>
-            </el-dialog>
-          </el-main>
-        </el-container>
-      </el-container>
-    </div>
-  </div>
+      <el-button type="primary" @click="edit" style="margin-top: 30px">修改</el-button>
+      <el-button type="warning" @click="asyncEdit" style="margin-top: 30px">异步修改</el-button>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, toRefs } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { useStore } from 'vuex'
 
 export default defineComponent({
-  name: 'HomeView',
-  components: {},
   setup() {
-    const router = useRouter()
-    const route = useRoute()
+    const store = useStore()
     const data = reactive({
-      dialogVisible: false,
+      name: store.state.name,
+      setAsyncRoutesMark: store.state.setAsyncRoutesMark,
+      num: 0,
     })
-    // console.log(router.getRoutes())
-    const list = router.getRoutes().filter(v => v.meta.isShow)
 
-    let determineLogout = () => {
-      localStorage.removeItem('token')
-      router.push('/login')
+    const edit = () => {
+      data.num++
+      store.commit('setName', '修改后的新名字' + data.num)
+
+      data.name = store.state.name
     }
-    return { ...toRefs(data), router, list, determineLogout, active: route.path }
+
+    //模拟异步修改数据
+    const asyncEdit = () => {
+      setTimeout(() => {
+        console.log('模拟异步修改数据')
+        store.dispatch('asyncSetName', '修改后的新名字99')
+        data.name = store.state.name
+      }, 1500)
+    }
+    return { ...toRefs(data), edit, asyncEdit }
   },
 })
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped></style>
