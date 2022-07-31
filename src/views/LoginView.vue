@@ -105,15 +105,15 @@ export default defineComponent({
                 },
                 component: 'CeshiView.vue',
               },
-              {
-                path: '/assembly',
-                name: 'assembly',
-                meta: {
-                  isShow: true,
-                  title: '测试页面',
-                },
-                component: 'AssemblyView.vue',
-              },
+              // {
+              //   path: '/assembly',
+              //   name: 'assembly',
+              //   meta: {
+              //     isShow: true,
+              //     title: '测试页面',
+              //   },
+              //   component: 'AssemblyView.vue',
+              // },
             ]
             console.log('模拟动态路由数据', list)
             localStorage.setItem('routes', JSON.stringify(list))
